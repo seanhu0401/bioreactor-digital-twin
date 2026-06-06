@@ -1,0 +1,21 @@
+[project]
+name = "bioreactor-digital-twin"
+version = "0.1.0"
+description = "Mechanistic fed-batch bioreactor simulation — Phase 1 Digital Twin project"
+requires-python = ">=3.13"
+dependencies = [
+    "marimo",
+    "numpy",
+    "scipy",
+    "matplotlib",
+]
+
+[tool.uv]
+dev-dependencies = []
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["bioreactor"]
