@@ -1,7 +1,7 @@
 import numpy as np
-from params import BioreactorParams
 
 from .model_types import FeedFunc
+from .params import BioreactorParams
 
 
 def make_feed(mode: str, p: BioreactorParams) -> tuple[FeedFunc, bool]:

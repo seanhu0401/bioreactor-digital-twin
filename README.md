@@ -4,7 +4,7 @@ Mechanistic fed-batch bioreactor simulation. A reactive [marimo](https://marimo.
 
 ## Layout
 
-- `bioreactor/` — model package: `kinetics`, `models` (RHS callables), `feeds`, `sensitivity`, `validation`, `params`, `model_types`. 
+- `bioreactor/` — model package: `kinetics`, `models` (RHS callables), `feeds`, `sensitivity`, `validation`, `params`, `model_types`, `simulate` (simulation entrypoint using RHS in `models`). 
 - `notebooks/` — the marimo notebook 
 - `tests/` — invariant tests (`test_fed_batch_invariants.py`).
 

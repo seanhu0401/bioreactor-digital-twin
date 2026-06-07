@@ -1,4 +1,4 @@
-from params import BioreactorParams
+from .params import BioreactorParams
 
 
 def monod_mu(S: float, p: BioreactorParams) -> float:

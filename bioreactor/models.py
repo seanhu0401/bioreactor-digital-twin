@@ -1,8 +1,8 @@
 import numpy as np
-from kinetics import monod_mu, product_rate
-from params import BioreactorParams
 
+from .kinetics import monod_mu, product_rate
 from .model_types import FeedFunc, StateVector
+from .params import BioreactorParams
 
 
 def fed_batch_rhs(
