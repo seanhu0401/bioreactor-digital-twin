@@ -1,7 +1,7 @@
 import numpy as np
 
+from ._model_types import FeedFunc, StateVector
 from .kinetics import monod_mu, product_rate
-from .model_types import FeedFunc, StateVector
 from .params import BioreactorParams
 
 

@@ -1,6 +1,6 @@
 import numpy as np
 
-from .model_types import FeedFunc
+from ._model_types import FeedFunc
 from .params import BioreactorParams
 
 
