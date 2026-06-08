@@ -6,10 +6,10 @@ import numpy.typing as npt
 from scipy.integrate import solve_ivp
 
 from .feeds import make_feed
-from .kinetics import monod_mu
 from .models import fed_batch_rhs
 from .params import BioreactorParams
-from .validation import validate_initial_volume
+from .state import validate_initial_volume
+from .steady_state import ChemostatAnalysis, analyze_chemostat
 
 
 class SolverResult(Protocol):
@@ -17,13 +17,6 @@ class SolverResult(Protocol):
     y: npt.NDArray[np.float64]
     success: bool
     message: str
-
-
-@dataclass(frozen=True)
-class ChemostatDiagnostics:
-    dilution_rate: float
-    washout_threshold: float
-    washout_expected: bool
 
 
 @dataclass(frozen=True)
@@ -37,7 +30,7 @@ class SimulationResult:
     mode: str
     max_volume: float
     near_volume_cap: bool
-    chemostat: ChemostatDiagnostics | None = None
+    chemostat: ChemostatAnalysis | None = None
 
 
 def simulate(
@@ -82,8 +75,7 @@ def simulate(
         The simulation result.
     """
 
-    if not validate_initial_volume(y0, params):
-        raise ValueError("Initial volume does not match V_0")
+    validate_initial_volume(y0, params)
 
     feed, outflow = make_feed(mode, params)
     solution = solve_ivp(
@@ -102,13 +94,7 @@ def simulate(
 
     chemostat = None
     if mode == "chemostat":
-        dilution_rate = params.F / params.V_0
-        washout_threshold = monod_mu(params.S_f, params) - params.k_d
-        chemostat = ChemostatDiagnostics(
-            dilution_rate=dilution_rate,
-            washout_threshold=washout_threshold,
-            washout_expected=dilution_rate >= washout_threshold,
-        )
+        chemostat = analyze_chemostat(params)
 
     return SimulationResult(
         t=solution.t,
