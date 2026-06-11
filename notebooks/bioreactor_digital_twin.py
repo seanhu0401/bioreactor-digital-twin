@@ -4,13 +4,12 @@ __generated_with = "0.23.5"
 app = marimo.App(width="medium")
 
 with app.setup(hide_code=True):
-    import marimo as mo
-    import matplotlib.pyplot as plt
-    import numpy as np
     from pathlib import Path
 
-    from matplotlib.axes import Axes
+    import marimo as mo
+    import matplotlib.pyplot as plt
     import matplotlib.ticker as mticker
+    import numpy as np
 
     from bioreactor.params import BioreactorParams
     from bioreactor.sensitivity import oat_sensitivity_analysis, tornado_ranking
@@ -50,7 +49,6 @@ with app.setup(hide_code=True):
 
     formatter = mticker.ScalarFormatter(useMathText=True)
     formatter.set_powerlimits((-3, 2))
-
 
     def save_figure(figure, filename: str):
         output_path = figures_dir / filename
@@ -108,22 +106,14 @@ def _(fedbatch_result):
             2, 1, figsize=(6.5, 5.0), sharex=True
         )
 
-        fedbatch_axes[0].plot(
-            fedbatch_result.t, fedbatch_result.X, label="Biomass X"
-        )
-        fedbatch_axes[0].plot(
-            fedbatch_result.t, fedbatch_result.S, label="Substrate S"
-        )
-        fedbatch_axes[0].plot(
-            fedbatch_result.t, fedbatch_result.P, label="Product P"
-        )
+        fedbatch_axes[0].plot(fedbatch_result.t, fedbatch_result.X, label="Biomass X")
+        fedbatch_axes[0].plot(fedbatch_result.t, fedbatch_result.S, label="Substrate S")
+        fedbatch_axes[0].plot(fedbatch_result.t, fedbatch_result.P, label="Product P")
         fedbatch_axes[0].set_ylabel("Concentration [g/L]")
         fedbatch_axes[0].legend(loc="best")
         fedbatch_axes[0].set_title("Constant-Feed Fed-Batch Trajectory")
 
-        fedbatch_axes[1].plot(
-            fedbatch_result.t, fedbatch_result.V, color="tab:purple"
-        )
+        fedbatch_axes[1].plot(fedbatch_result.t, fedbatch_result.V, color="tab:purple")
         fedbatch_axes[1].set_xlabel("Time [h]")
         fedbatch_axes[1].set_ylabel("Volume [L]")
 
@@ -136,12 +126,8 @@ def _(fedbatch_result):
 @app.cell(hide_code=True)
 def _():
     chemostat_params = BioreactorParams()
-    chemostat_probe = chemostat_bifurcation_curve(
-        chemostat_params, np.array([0.01])
-    )[0]
-    dilution_rates = np.linspace(
-        0.001, chemostat_probe.washout_threshold * 1.25, 240
-    )
+    chemostat_probe = chemostat_bifurcation_curve(chemostat_params, np.array([0.01]))[0]
+    dilution_rates = np.linspace(0.001, chemostat_probe.washout_threshold * 1.25, 240)
     chemostat_curve = chemostat_bifurcation_curve(chemostat_params, dilution_rates)
     washout_threshold = chemostat_curve[0].washout_threshold
     biomass_steady_state = np.array([point.X_star for point in chemostat_curve])
@@ -160,7 +146,7 @@ def _(chemostat_params, washout_threshold):
     mo.md(rf"""
     ## Chemostat Washout Boundary
 
-    The chemostat steady-state calculation maps dilution rate to analytical the dilution rate to analytical expressions forsubstrate and biomass equilibria. For the default feed substrate concentration of `{chemostat_params.S_f:.1f} g/L`, washout begins at approximately `{washout_threshold:.3f}` $\mathtt h^{{-1}}$.
+    The chemostat steady-state calculation maps the dilution rate to analytical expressions for substrate and biomass equilibria. For the default feed substrate concentration of `{chemostat_params.S_f:.1f} g/L`, washout begins at approximately `{washout_threshold:.3f}` $\mathtt h^{{-1}}$.
     """)
     return
 
@@ -219,9 +205,7 @@ def _(
         )
 
         handles, labels = chemostat_axis.get_legend_handles_labels()
-        substrate_handles, substrate_labels = (
-            substrate_axis.get_legend_handles_labels()
-        )
+        substrate_handles, substrate_labels = substrate_axis.get_legend_handles_labels()
         substrate_axis.legend(
             handles + substrate_handles, labels + substrate_labels, loc=6
         )
@@ -253,7 +237,6 @@ def _():
     )
     ranked_sensitivity = tornado_ranking(sensitivity_rows)
 
-
     def parameter_display_name(parameter_name: str) -> str:
         if parameter_name == "mu_max":
             return r"$\mu_{max}$"
@@ -261,7 +244,6 @@ def _():
             return parameter_name
         base, subscript = parameter_name.split("_", 1)
         return rf"${base}_{{{subscript}}}$"
-
 
     sensitivity_names = [
         parameter_display_name(row.parameter_name) for row in ranked_sensitivity
