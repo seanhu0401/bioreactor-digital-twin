@@ -103,19 +103,28 @@ def _(fedbatch_params, fedbatch_result):
 def _(fedbatch_result):
     with plt.rc_context(params):
         fedbatch_fig, fedbatch_axes = plt.subplots(
-            2, 1, figsize=(6.5, 5.0), sharex=True
+            3, 1, figsize=(6.5, 6.6), sharex=True
         )
 
         fedbatch_axes[0].plot(fedbatch_result.t, fedbatch_result.X, label="Biomass X")
         fedbatch_axes[0].plot(fedbatch_result.t, fedbatch_result.S, label="Substrate S")
-        fedbatch_axes[0].plot(fedbatch_result.t, fedbatch_result.P, label="Product P")
+        product_line = fedbatch_axes[0].plot(
+            fedbatch_result.t, fedbatch_result.P, label="Product P"
+        )[0]
         fedbatch_axes[0].set_ylabel("Concentration [g/L]")
         fedbatch_axes[0].legend(loc="best")
         fedbatch_axes[0].set_title("Constant-Feed Fed-Batch Trajectory")
 
-        fedbatch_axes[1].plot(fedbatch_result.t, fedbatch_result.V, color="tab:purple")
-        fedbatch_axes[1].set_xlabel("Time [h]")
-        fedbatch_axes[1].set_ylabel("Volume [L]")
+        # Product on its own axis: P is tiny against X/S on the shared scale above,
+        # so a dedicated panel makes its monotonic accumulation legible.
+        fedbatch_axes[1].plot(
+            fedbatch_result.t, fedbatch_result.P, color=product_line.get_color()
+        )
+        fedbatch_axes[1].set_ylabel("Product P [g/L]")
+
+        fedbatch_axes[2].plot(fedbatch_result.t, fedbatch_result.V, color="tab:purple")
+        fedbatch_axes[2].set_xlabel("Time [h]")
+        fedbatch_axes[2].set_ylabel("Volume [L]")
 
         fedbatch_fig.tight_layout()
         fedbatch_path = save_figure(fedbatch_fig, "fedbatch_trajectory.png")
