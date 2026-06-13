@@ -1,3 +1,14 @@
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "bioreactor-digital-twin @ git+https://github.com/seanhu0401/bioreactor-digital-twin.git",
+#     "marimo",
+#     "matplotlib",
+#     "numpy",
+#     "scipy",
+# ]
+# ///
+
 import marimo
 
 __generated_with = "0.23.5"

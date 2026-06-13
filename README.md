@@ -1,5 +1,7 @@
 # Bioreactor Digital Twin
 
+[![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/seanhu0401/bioreactor-digital-twin/blob/main/notebooks/bioreactor_digital_twin.py)
+
 This repository contains a small mechanistic bioreactor simulation package for the Bioreactor Digital Twin project. The current code supports batch, constant-feed fed-batch, exponential fed-batch, and chemostat modes with tested mass-balance, quasi-steady-state substrate, washout-threshold, one-at-a-time sensitivity, and tornado-ranking checks.
 
 ## Layout
